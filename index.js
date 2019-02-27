@@ -22,31 +22,52 @@ PIXI.loader
     beeURL
   ])
   .load( () => {
-    let daisy = PIXI.Sprite.fromImage(daisyURL)
     let bee = PIXI.Sprite.fromImage(beeURL)
 
-    daisy.scale.x = 0.25
-    daisy.scale.y = 0.25
     bee.scale.x = 0.125
     bee.scale.y = 0.125
 
-    daisy.y = app.screen.height - daisy.height
+
     bee.x = app.screen.width - bee.width
 
-    bee.interactive = true
-    bee.buttonMode = true
-    bee.on('pointerdown', onClick)
 
-    function onClick() {
+
+    function onClick(sprite) { return () => {
       new Tween(bee.position)
-      .to({ x:0, y: 400 }, 10000)
+      .to({ x:sprite.x, y: sprite.y - 50 }, 10000)
       .yoyo(true)
       .easing(TWEEN.Easing.Quadratic.Out)
       .repeat(Infinity)
       .start()
+      }
     }
 
-    app.stage.addChild(daisy)
+    // for (var i = 0; i < 25; i++) {
+    // var bunny = new PIXI.Sprite(texture);
+    // bunny.anchor.set(0.5);
+    // bunny.x = (i % 5) * 40;
+    // bunny.y = Math.floor(i / 5) * 40;
+    let daisies = new PIXI.Container()
+    daisies.interactive = true
+    daisies.interactiveChildren = true
+
+    for (var i = 0; i < 3; i++) {
+      let daisy = PIXI.Sprite.fromImage(daisyURL)
+
+      daisy.scale.x = 0.25
+      daisy.scale.y = 0.25
+
+      daisy.y = app.screen.height - daisy.height
+      daisy.interactive = true
+      daisy.buttonMode = true
+      daisy.on('pointerdown', onClick(daisy))
+
+      daisy.x = (i % 5) * 150
+      daisy.y = app.screen.height - daisy.height
+      daisies.addChild(daisy)
+    }
+
+    app.stage.addChild(daisies)
     app.stage.addChild(bee)
 
     app.ticker.add(() => {
