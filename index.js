@@ -1,10 +1,8 @@
 import * as PIXI from 'pixi.js'
-import Bump from 'bump.js'
 import TWEEN from "@tweenjs/tween.js"
 import {Tween} from "@tweenjs/tween.js"
 import Flower from "./flower"
 const app = new PIXI.Application({width: 800, height: 600})
-const bump = new Bump(PIXI)
 const graphics = new PIXI.Graphics()
 
 const daisyTopURL = require('./images/daisy-head.png')
