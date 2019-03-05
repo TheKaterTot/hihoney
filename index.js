@@ -34,6 +34,8 @@ PIXI.loader
     function onClick(sprite) { return () => {
       if (currentDaisy) {
         currentDaisy.animateLeaving()
+        bee.landed = false
+        bee.showStatusBar()
       }
       new Tween(bee.position)
       .to({ x:sprite.x + 50, y: sprite.y - 30 }, 1000)
@@ -41,6 +43,8 @@ PIXI.loader
       .onComplete( () => {
         currentDaisy = sprite
         sprite.animateLanding()
+        bee.landed = true
+        bee.showStatusBar()
       })
       .start()
       }

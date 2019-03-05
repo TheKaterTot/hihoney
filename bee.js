@@ -11,10 +11,17 @@ export default class Bee extends Container {
     this.image = Sprite.fromImage(beeURL)
     this.addChild(this.image)
     this.x = x - this.width
-    this.drawGraphic(0, this.image.height)
-    this.addChild(graphics)
+    this.landed = false
   }
 
+  showStatusBar() {
+    if(this.landed == true) {
+      this.drawGraphic(0, this.image.height)
+      this.addChild(graphics)
+    } else {
+      this.removeChild(graphics)
+    }
+  }
   drawGraphic(x, y) {
     graphics.lineStyle(2, 0xffe446)
     graphics.beginFill(0xffffff, 0.50)
