@@ -3,6 +3,7 @@ import TWEEN from "@tweenjs/tween.js"
 import {Tween} from "@tweenjs/tween.js"
 import Flower from "./flower"
 import StatusBar from "./statusBar"
+import Bee from "./bee"
 const app = new PIXI.Application({width: 800, height: 600})
 const graphics = new PIXI.Graphics()
 
@@ -27,12 +28,8 @@ PIXI.loader
     beeURL
   ])
   .load( () => {
-
-    let bee = PIXI.Sprite.fromImage(beeURL)
+    let bee = new Bee(app.screen.width, 0)
     let currentDaisy
-    bee.interactive = true
-
-    bee.x = app.screen.width - bee.width
 
     function onClick(sprite) { return () => {
       if (currentDaisy) {
@@ -60,7 +57,6 @@ PIXI.loader
 
       daisies.addChild(daisy)
     }
-
 
 //status bar
     const statusBar = new StatusBar()
