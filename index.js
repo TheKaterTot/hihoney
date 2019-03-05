@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import TWEEN from "@tweenjs/tween.js"
 import {Tween} from "@tweenjs/tween.js"
 import Flower from "./flower"
+import StatusBar from "./statusBar"
 const app = new PIXI.Application({width: 800, height: 600})
 const graphics = new PIXI.Graphics()
 
@@ -62,16 +63,11 @@ PIXI.loader
 
 
 //status bar
-
-    let statusBar = new PIXI.Container()
-    // graphics.lineStyle(2, 0xffe446);
-    // graphics.beginFill(0xffe446, 0.25);
-    // graphics.drawRoundedRect(10, 10, 400, 20, 10);
-    // graphics.endFill();
+    const statusBar = new StatusBar()
 
     app.stage.addChild(daisies)
     app.stage.addChild(bee)
-    app.stage.addChild(graphics)
+    app.stage.addChild(statusBar)
 
     app.ticker.add(() => {
       TWEEN.update()
