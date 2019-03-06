@@ -1,21 +1,33 @@
-import { Container } from "pixi.js"
-const graphics = new PIXI.Graphics()
-
+import { Container, Graphics } from "pixi.js"
 export default class statusBar extends Container {
-  constructor() {
+  constructor(x, y, color, maxWidth, height) {
     super()
-    this.x = 10
-    this.y = 10
-    this.maxWidth = 400
-    this.height = 20
+    this.x = x
+    this.y = y
+    this.color = color
+    this.maxWidth = maxWidth
+    this.barHeight = height
+    this.graphics = new Graphics()
     this.drawGraphic()
-    this.addChild(graphics)
+    this.addChild(this.graphics)
   }
 
   drawGraphic() {
-    graphics.lineStyle(2, 0xffe446)
-    graphics.beginFill(0xffe446, 0.30)
-    graphics.drawRoundedRect(10, 10, 400, 20, 10)
-    graphics.endFill()
+    this.graphics.lineStyle(2, this.color)
+    this.graphics.beginFill(this.color, 0.30)
+    this.graphics.drawRoundedRect(this.x, this.y, this.maxWidth, this.barHeight, 10)
+    this.graphics.endFill()
+  }
+
+  updateWidth(percent) {
+    this.graphics.lineStyle(2, this.color)
+    this.graphics.beginFill(this.color, 1)
+    this.graphics.drawRoundedRect(this.x, this.y, this.maxWidth * percent, this.barHeight, 10)
+    this.graphics.endFill()
+  }
+
+  clear() {
+    this.graphics.clear()
+    this.drawGraphic()
   }
 }

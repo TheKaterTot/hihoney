@@ -35,7 +35,7 @@ PIXI.loader
       if (currentDaisy) {
         currentDaisy.animateLeaving()
         bee.landed = false
-        bee.showStatusBar()
+        bee.toggleStatusBar()
       }
       new Tween(bee.position)
       .to({ x:sprite.x + 50, y: sprite.y - 30 }, 1000)
@@ -44,7 +44,7 @@ PIXI.loader
         currentDaisy = sprite
         sprite.animateLanding()
         bee.landed = true
-        bee.showStatusBar()
+        bee.toggleStatusBar()
       })
       .start()
       }
@@ -63,7 +63,7 @@ PIXI.loader
     }
 
 //status bar
-    const statusBar = new StatusBar()
+    let statusBar = new StatusBar(10, 10, 0xffe446, 400, 20)
 
     app.stage.addChild(daisies)
     app.stage.addChild(bee)
@@ -71,6 +71,7 @@ PIXI.loader
 
     app.ticker.add(() => {
       TWEEN.update()
+      bee.update()
     })
 
     app.ticker.start()

@@ -1,5 +1,5 @@
 import { Container, Sprite } from "pixi.js"
-const graphics = new PIXI.Graphics()
+import StatusBar from "./statusBar"
 
 const beeURL = require('./images/bumblebee.png')
 
@@ -12,20 +12,30 @@ export default class Bee extends Container {
     this.addChild(this.image)
     this.x = x - this.width
     this.landed = false
+    this.statusBar = new StatusBar(0, this.image.height / 2, 0xf7ad31, 100, 10)
+    this.statusBar.visible = false
+    this.addChild(this.statusBar)
+    this.percent = 0
   }
 
-  showStatusBar() {
+  toggleStatusBar() {
     if(this.landed == true) {
-      this.drawGraphic(0, this.image.height)
-      this.addChild(graphics)
+      this.statusBar.visible = true
     } else {
-      this.removeChild(graphics)
+      this.statusBar.visible = false
+      this.percent = 0
+      this.statusBar.clear()
     }
   }
-  drawGraphic(x, y) {
-    graphics.lineStyle(2, 0xffe446)
-    graphics.beginFill(0xffffff, 0.50)
-    graphics.drawRoundedRect(x, y, 100, 10, 10)
-    graphics.endFill()
+
+  gatherPollen() {
+    if (this.landed == true && this.percent < 1) {
+      this.statusBar.updateWidth(this.percent)
+      this.percent += 0.005
+    }
+  }
+
+  update() {
+    this.gatherPollen()
   }
 }
