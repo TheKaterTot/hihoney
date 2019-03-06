@@ -63,11 +63,22 @@ PIXI.loader
     }
 
 //status bar
-    let statusBar = new StatusBar(10, 10, 0xffe446, 400, 20)
+    const bigStatusBar = new StatusBar(10, 10, 0xffe446, 400, 20)
+    let currentPercent = 0
+    bee.on('gather', () => {
+      if (currentPercent >= 1) {
+        bigStatusBar.clear()
+        currentPercent = 0.25
+        bigStatusBar.updateWidth(currentPercent)
+        return
+      }
+      currentPercent += 0.25
+      bigStatusBar.updateWidth(currentPercent)
+    })
 
     app.stage.addChild(daisies)
     app.stage.addChild(bee)
-    app.stage.addChild(statusBar)
+    app.stage.addChild(bigStatusBar)
 
     app.ticker.add(() => {
       TWEEN.update()

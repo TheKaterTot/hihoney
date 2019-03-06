@@ -29,9 +29,13 @@ export default class Bee extends Container {
   }
 
   gatherPollen() {
-    if (this.landed == true && this.percent < 1) {
+    if (this.landed && this.percent < 1) {
       this.statusBar.updateWidth(this.percent)
       this.percent += 0.005
+    } else if (this.percent >= 1 && this.landed) {
+      this.emit('gather')
+      this.landed = false
+      this.toggleStatusBar()
     }
   }
 
