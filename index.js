@@ -4,6 +4,7 @@ import {Tween} from "@tweenjs/tween.js"
 import Flower from "./flower"
 import StatusBar from "./statusBar"
 import Bee from "./bee"
+import Hive from "./hive"
 const app = new PIXI.Application({width: 800, height: 600})
 const graphics = new PIXI.Graphics()
 
@@ -30,12 +31,12 @@ PIXI.loader
   .load( () => {
     let bee = new Bee(app.screen.width, 0)
     let currentDaisy
+    let currentPercent = 0
 
     function onClick(sprite) { return () => {
       if (currentDaisy) {
         currentDaisy.animateLeaving()
-        bee.landed = false
-        bee.toggleStatusBar()
+        bee.stopGather()
       }
       new Tween(bee.position)
       .to({ x:sprite.x + 50, y: sprite.y - 30 }, 1000)
@@ -43,8 +44,9 @@ PIXI.loader
       .onComplete( () => {
         currentDaisy = sprite
         sprite.animateLanding()
-        bee.landed = true
-        bee.toggleStatusBar()
+        if (currentPercent < 1) {
+          bee.startGather()
+        }
       })
       .start()
       }
@@ -64,7 +66,6 @@ PIXI.loader
 
 //status bar
     const bigStatusBar = new StatusBar(10, 10, 0xffe446, 400, 20)
-    let currentPercent = 0
     bee.on('gather', () => {
       if (currentPercent >= 1) {
         bigStatusBar.clear()
@@ -76,9 +77,13 @@ PIXI.loader
       bigStatusBar.updateWidth(currentPercent)
     })
 
+//hive
+    const hive = new Hive(0, 40)
+
     app.stage.addChild(daisies)
     app.stage.addChild(bee)
     app.stage.addChild(bigStatusBar)
+    app.stage.addChild(hive)
 
     app.ticker.add(() => {
       TWEEN.update()
