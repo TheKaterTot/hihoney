@@ -83,10 +83,12 @@ PIXI.loader
 //hive
 
     function onHiveClick(sprite) { return () => {
-      new Tween(bee.position)
-      .to({x: sprite.x+50, y: sprite.y + 100}, 1000)
-      .easing(TWEEN.Easing.Circular.Out)
-      .start()
+      if (currentPercent >= 1) {
+        new Tween(bee.position)
+        .to({x: sprite.x+50, y: sprite.y + 100}, 1000)
+        .easing(TWEEN.Easing.Circular.Out)
+        .start()
+        }
       }
     }
     const hive = new Hive(0, 40)
