@@ -34,6 +34,9 @@ PIXI.loader
     let currentPercent = 0
 
     function onClick(sprite) { return () => {
+      if (sprite == currentDaisy) {
+        return
+      }
       if (currentDaisy) {
         currentDaisy.animateLeaving()
         bee.stopGather()
@@ -78,7 +81,17 @@ PIXI.loader
     })
 
 //hive
+
+    function onHiveClick(sprite) { return () => {
+      new Tween(bee.position)
+      .to({x: sprite.x+50, y: sprite.y + 100}, 1000)
+      .easing(TWEEN.Easing.Circular.Out)
+      .start()
+      }
+    }
     const hive = new Hive(0, 40)
+
+    hive.on('pointerdown', onHiveClick(hive))
 
     app.stage.addChild(daisies)
     app.stage.addChild(bee)
