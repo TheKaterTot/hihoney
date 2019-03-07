@@ -87,6 +87,10 @@ PIXI.loader
         new Tween(bee.position)
         .to({x: sprite.x+50, y: sprite.y + 100}, 1000)
         .easing(TWEEN.Easing.Circular.Out)
+        .onComplete( () => {
+          currentPercent = 0
+          bigStatusBar.clear()
+        })
         .start()
         }
       }
