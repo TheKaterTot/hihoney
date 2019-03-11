@@ -46,6 +46,7 @@ PIXI.loader
     startScreen.on('start', () => {
       app.stage.removeChildren()
       app.stage.addChild(gameScreen)
+      gameScreen.infectNext()
     })
 
     app.ticker.add(() => {

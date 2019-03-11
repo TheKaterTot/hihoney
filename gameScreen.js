@@ -36,15 +36,15 @@ export default class gameScreen extends Container {
 
       daisy.on('pointerdown', this.onClick(daisy))
 
+      daisy.on('infectionComplete', () => {
+        this.infectNext()
+      })
+
       this.daisies.addChild(daisy)
     }
 
     this.statusBar = new StatusBar(10, 10, 0xffe446, 400, 20)
     this.bee.on('gather', this.onGather())
-
-    let infectedDaisyIndex = Math.floor(Math.random()*3)
-    this.daisies.children[infectedDaisyIndex].infect()
-
 
     this.hive = new Hive(0, 40)
     this.hive.on('pointerdown', this.onHiveClick(this.hive))
@@ -59,6 +59,15 @@ export default class gameScreen extends Container {
     this.addChild(this.textThree)
 
   }
+
+  infectNext() {
+    let waitTime = Math.floor(Math.random()*5000)
+    setTimeout( () => {
+      let infectedDaisyIndex = Math.floor(Math.random()*3)
+      this.daisies.children[infectedDaisyIndex].infect()
+    }, waitTime)
+  }
+
 
   onClick(sprite) { return () => {
     this.text.visible = false

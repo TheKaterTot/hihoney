@@ -49,6 +49,7 @@ export default class Flower extends Container {
       })
       .onComplete( () => {
         this.ladybug.scale.y = 1
+        this.emit('infectionComplete')
       })
       .delay(2000)
     )
