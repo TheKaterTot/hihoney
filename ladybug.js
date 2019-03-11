@@ -7,6 +7,6 @@ const ladybugURL = require('./images/ladybug.png')
      this.y = y
      this.image = Sprite.fromImage(ladybugURL)
      this.addChild(this.image)
-     this.x = x - this.image.width
+     this.x = x
    }
  }

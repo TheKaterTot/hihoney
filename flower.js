@@ -39,6 +39,20 @@ export default class Flower extends Container {
   }
 
   infect() {
+    this.ladybug.y = this.bottomImage.height + this.topImage.height
+    new Tween(this.ladybug.position)
+    .to({y: 0}, 5000)
+    .chain(new Tween(this.ladybug.position)
+      .to({y: this.bottomImage.height + this.topImage.height}, 5000)
+      .onStart( () => {
+        this.ladybug.scale.y = -1
+      })
+      .onComplete( () => {
+        this.ladybug.scale.y = 1
+      })
+      .delay(2000)
+    )
+    .start()
     this.ladybug.visible = true
   }
 }
