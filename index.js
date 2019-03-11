@@ -12,6 +12,7 @@ const titleURL = require('./images/hi-honey.png')
 const textOneURL = require('./images/text-1.png')
 const textTwoURL = require('./images/text-2.png')
 const textThreeURL = require('./images/text-3.png')
+const ladybugURL = require('./images/ladybug.png')
 
 //make canvas the size of browser window
 app.renderer.view.style.position = "absolute"
@@ -32,7 +33,9 @@ PIXI.loader
     titleURL,
     textOneURL,
     textTwoURL,
-    textThreeURL
+    textThreeURL,
+    ladybugURL
+
   ])
   .load( () => {
     let startScreen = new StartScreen(app.screen.width, app.screen.height)

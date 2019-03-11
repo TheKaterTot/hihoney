@@ -42,6 +42,10 @@ export default class gameScreen extends Container {
     this.statusBar = new StatusBar(10, 10, 0xffe446, 400, 20)
     this.bee.on('gather', this.onGather())
 
+    let infectedDaisyIndex = Math.floor(Math.random()*3)
+    this.daisies.children[infectedDaisyIndex].infect()
+
+
     this.hive = new Hive(0, 40)
     this.hive.on('pointerdown', this.onHiveClick(this.hive))
 
