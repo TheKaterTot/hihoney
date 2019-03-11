@@ -6,6 +6,7 @@ const beeURL = require('./images/bumblebee.png')
 export default class Bee extends Container {
   constructor(x, y) {
     super()
+    this.initial = {x, y}
     this.y = y
     this.interactive = true
     this.image = Sprite.fromImage(beeURL)
@@ -38,6 +39,11 @@ export default class Bee extends Container {
       this.emit('gather')
       this.stopGather()
     }
+  }
+
+  reset() {
+    this.x = this.initial.x - this.width
+    this.y = this.initial.y
   }
 
   update() {

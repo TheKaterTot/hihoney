@@ -1,16 +1,14 @@
 import * as PIXI from 'pixi.js'
 import TWEEN from "@tweenjs/tween.js"
-import {Tween} from "@tweenjs/tween.js"
-import Flower from "./flower"
-import StatusBar from "./statusBar"
-import Bee from "./bee"
-import Hive from "./hive"
+import StartScreen from "./startScreen"
+import GameScreen from "./gameScreen"
 const app = new PIXI.Application({width: 800, height: 600})
-const graphics = new PIXI.Graphics()
 
 const daisyTopURL = require('./images/daisy-head.png')
 const daisyBottomURL = require('./images/daisy-bottom.png')
 const beeURL = require('./images/bumblebee.png')
+const queenURL = require('./images/queen.png')
+const titleURL = require('./images/hi-honey.png')
 
 //make canvas the size of browser window
 app.renderer.view.style.position = "absolute"
@@ -26,87 +24,24 @@ PIXI.loader
   .add([
     daisyTopURL,
     daisyBottomURL,
-    beeURL
+    beeURL,
+    queenURL,
+    titleURL
   ])
   .load( () => {
-    let bee = new Bee(app.screen.width, 0)
-    let currentDaisy
-    let currentPercent = 0
+    let startScreen = new StartScreen(app.screen.width, app.screen.height)
+    let gameScreen = new GameScreen(app.screen.width, app.screen.height)
 
-    function onClick(sprite) { return () => {
-      if (sprite == currentDaisy) {
-        return
-      }
-      if (currentDaisy) {
-        currentDaisy.animateLeaving()
-        bee.stopGather()
-      }
-      new Tween(bee.position)
-      .to({ x:sprite.x + 50, y: sprite.y - 30 }, 1000)
-      .easing(TWEEN.Easing.Circular.Out)
-      .onComplete( () => {
-        currentDaisy = sprite
-        sprite.animateLanding()
-        if (currentPercent < 1) {
-          bee.startGather()
-        }
-      })
-      .start()
-      }
-    }
+    app.stage.addChild(startScreen)
 
-    let daisies = new PIXI.Container()
-    daisies.interactive = true
-    daisies.interactiveChildren = true
-
-    for (var i = 0; i < 3; i++) {
-      let daisy = new Flower((i % 5) * 300, app.screen.height)
-
-      daisy.on('pointerdown', onClick(daisy))
-
-      daisies.addChild(daisy)
-    }
-
-//status bar
-    const bigStatusBar = new StatusBar(10, 10, 0xffe446, 400, 20)
-    bee.on('gather', () => {
-      if (currentPercent >= 1) {
-        bigStatusBar.clear()
-        currentPercent = 0.25
-        bigStatusBar.updateWidth(currentPercent)
-        return
-      }
-      currentPercent += 0.25
-      bigStatusBar.updateWidth(currentPercent)
+    startScreen.on('start', () => {
+      app.stage.removeChildren()
+      app.stage.addChild(gameScreen)
     })
-
-//hive
-
-    function onHiveClick(sprite) { return () => {
-      if (currentPercent >= 1) {
-        new Tween(bee.position)
-        .to({x: sprite.x+50, y: sprite.y + 100}, 1000)
-        .easing(TWEEN.Easing.Circular.Out)
-        .onComplete( () => {
-          currentPercent = 0
-          bigStatusBar.clear()
-        })
-        .start()
-        }
-      }
-    }
-    const hive = new Hive(0, 40)
-
-    hive.on('pointerdown', onHiveClick(hive))
-
-    app.stage.addChild(daisies)
-    app.stage.addChild(bee)
-    app.stage.addChild(bigStatusBar)
-    app.stage.addChild(hive)
 
     app.ticker.add(() => {
       TWEEN.update()
-      bee.update()
+      gameScreen.update()
     })
 
     app.ticker.start()
