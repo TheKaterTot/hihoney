@@ -8,11 +8,14 @@ const daisyTopURL = require('./images/daisy-head.png')
 const daisyBottomURL = require('./images/daisy-bottom.png')
 const beeURL = require('./images/bumblebee.png')
 const queenURL = require('./images/queen.png')
-const titleURL = require('./images/hi-honey.png')
 const textOneURL = require('./images/text-1.png')
 const textTwoURL = require('./images/text-2.png')
 const textThreeURL = require('./images/text-3.png')
 const ladybugURL = require('./images/ladybug.png')
+const titleURL = require('./images/title.png')
+const daisyBunchURL = require('./images/daisy-bunch.png')
+const clickStartURL = require('./images/click-start.png')
+const titleBeeURL = require('./images/title-bee.png')
 
 // make canvas the size of browser window
 app.renderer.view.style.position = 'absolute'
@@ -31,10 +34,13 @@ PIXI.loader
     beeURL,
     queenURL,
     titleURL,
+    daisyBunchURL,
+    clickStartURL,
     textOneURL,
     textTwoURL,
     textThreeURL,
-    ladybugURL
+    ladybugURL,
+    titleBeeURL
 
   ])
   .load(() => {
