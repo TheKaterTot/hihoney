@@ -1,4 +1,4 @@
-import {Container, Sprite} from "pixi.js"
+import {Container} from "pixi.js"
 import TWEEN from "@tweenjs/tween.js"
 import {Tween} from "@tweenjs/tween.js"
 import Bee from "./bee"
@@ -22,7 +22,7 @@ export default class gameScreen extends Container {
     this.queen = new Queen(-200, 100)
     this.currentDaisy = null
     this.currentPercent = 0
-    this.daisies = new PIXI.Container()
+    this.daisies = new Container()
     this.daisies.interactive = true
     this.daisies.interactiveChildren = true
     this.text = new ScreenText(this.bee.x, 50, textOneURL)
@@ -38,6 +38,10 @@ export default class gameScreen extends Container {
 
       daisy.on('infectionComplete', () => {
         this.infectNext()
+      })
+
+      daisy.on('infected', () => {
+        this.onInfected(daisy)
       })
 
       this.daisies.addChild(daisy)
@@ -151,8 +155,23 @@ export default class gameScreen extends Container {
   }
 }
 
-  update() {
-    this.bee.update()
+onInfected(daisy) {
+  if (this.currentDaisy != daisy) {
+    return
   }
+  this.bee.stopGather()
+  this.currentDaisy = null
+  //player gets kicked off if on
+  new Tween(this.bee.position)
+  .to({x: daisy.x + 50, y: daisy.y - 100}, 500)
+  .start()
+}
+
+update() {
+  this.bee.update()
+  this.daisies.children.forEach( (daisy) => {
+    daisy.update()
+  })
+}
 
 }

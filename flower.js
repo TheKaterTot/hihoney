@@ -19,7 +19,7 @@ export default class Flower extends Container {
     this.addChild(this.bottomImage)
     this.y = y - this.height
     this.buttonMode = true
-    this.ladybug = new Ladybug(0, 0)
+    this.ladybug = new Ladybug(0, this.topImage.height + this.bottomImage.height)
     this.ladybug.visible = false
     this.addChild(this.ladybug)
   }
@@ -55,5 +55,51 @@ export default class Flower extends Container {
     )
     .start()
     this.ladybug.visible = true
+  }
+
+  isInfected() {
+    let hit, combinedHalfWidths, combinedHalfHeights, vx, vy
+    hit = false
+    let daisy = this.topImage.getBounds()
+    let ladybug = this.ladybug.getBounds()
+    // center points for each sprite
+    daisy.centerX = daisy.x + daisy.width / 2
+    daisy.centerY = daisy.y + daisy.height / 2
+
+    ladybug.centerX = ladybug.x + ladybug.width / 2
+    ladybug.centerY = ladybug.y + ladybug.height / 2
+
+    // half widths and heights of each sprite
+    daisy.halfWidth = daisy.width / 2
+    daisy.halfHeight = daisy.height / 2
+    ladybug.halfWidth = ladybug.width / 2
+    ladybug.halfHeight = ladybug.height / 2
+    // calculate distance vector
+    vx = daisy.centerX - ladybug.centerX
+    vy = daisy.centerY - ladybug.centerY
+
+    combinedHalfWidths = daisy.halfWidth + ladybug.halfWidth
+    combinedHalfHeights = daisy.halfHeight + ladybug.halfHeight
+
+    if (Math.abs(vx) < combinedHalfWidths) {
+      //A collision might be occuring. Check for a collision on the y axis
+      if (Math.abs(vy) < combinedHalfHeights) {
+        //There's definitely a collision happening
+        hit = true
+        this.emit('infected')
+      } else {
+        //There's no collision on the y axis
+        hit = false
+      }
+    } else {
+      //There's no collision on the x axis
+      hit = false
+    }
+    //`hit` will be either `true` or `false`
+    return hit
+  }
+
+  update() {
+    this.isInfected()
   }
 }
