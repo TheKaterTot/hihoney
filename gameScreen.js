@@ -30,6 +30,7 @@ export default class gameScreen extends Container {
     this.textThree = new ScreenText(this.bee.x, 50, textThreeURL)
     this.textTwo.visible = false
     this.textThree.visible = false
+    this.travelTween = null
 
     for (var i = 0; i < 3; i++) {
       let daisy = new Flower((i % 5) * 300, height)
@@ -78,15 +79,15 @@ export default class gameScreen extends Container {
     if (sprite == this.currentDaisy) {
       return
     }
+    this.currentDaisy = sprite
     if (this.currentDaisy) {
       this.currentDaisy.animateLeaving()
       this.bee.stopGather()
     }
-    new Tween(this.bee.position)
+    this.travelTween = new Tween(this.bee.position)
     .to({ x:sprite.x + 50, y: sprite.y - 30 }, 1000)
     .easing(TWEEN.Easing.Circular.Out)
     .onComplete( () => {
-      this.currentDaisy = sprite
       sprite.animateLanding()
       if (this.currentPercent < 1) {
         this.bee.startGather()
@@ -162,8 +163,15 @@ onInfected(daisy) {
   this.bee.stopGather()
   this.currentDaisy = null
   //player gets kicked off if on
+  if (this.travelTween) {
+    this.travelTween.stop()
+  }
   new Tween(this.bee.position)
-  .to({x: daisy.x + 50, y: daisy.y - 100}, 500)
+  .to({x: daisy.x + (daisy.width/2 - this.bee.width/2), y: daisy.y - 30})
+  .chain(
+    new Tween(this.bee.position)
+    .to({x: daisy.x + 50, y: daisy.y - 100}, 500)
+  )
   .start()
 }
 
