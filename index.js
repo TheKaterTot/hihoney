@@ -2,7 +2,11 @@ import * as PIXI from 'pixi.js'
 import TWEEN from '@tweenjs/tween.js'
 import StartScreen from './startScreen'
 import GameScreen from './gameScreen'
+import SocketIO from "socket.io-client"
+
 const app = new PIXI.Application({ width: 800, height: 600 })
+
+const socket = SocketIO()
 
 const daisyTopURL = require('./images/daisy-head.png')
 const daisyBottomURL = require('./images/daisy-bottom.png')

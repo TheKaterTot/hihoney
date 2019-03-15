@@ -1,11 +1,12 @@
 {
-  "name": "adventure",
+  "name": "hihoney",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
+    "dev": "parcel watch ./index.html",
     "prestart": "parcel build ./index.html"
   },
   "author": "",
@@ -14,7 +15,8 @@
     "@tweenjs/tween.js": "^17.3.0",
     "express": "^4.16.4",
     "parcel": "^1.11.0",
-    "pixi.js": "^4.8.5"
+    "pixi.js": "^4.8.5",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "eslint": "^5.15.1",
