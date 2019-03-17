@@ -56,6 +56,38 @@ io.on('connection', (socket) => {
       }
     ])
   })
+  socket.on('daisyClick', () => {
+    client.writeMeasurement('PlayerActions', [
+      {
+        tags: { type: 'daisyClick' },
+        fields: { daisyClick: 1 }
+      }
+    ])
+  })
+  socket.on('hiveClick', () => {
+    client.writeMeasurement('PlayerActions', [
+      {
+        tags: { type: 'hiveClick' },
+        fields: { hiveClick: 1 }
+      }
+    ])
+  })
+  socket.on('gather', () => {
+    client.writeMeasurement('PlayerActions', [
+      {
+        tags: { type: 'gather' },
+        fields: { gather: 1 }
+      }
+    ])
+  })
+  socket.on('bumped', () => {
+    client.writeMeasurement('GameMechanics', [
+      {
+        tags: { type: 'bump' },
+        fields: { bumped: 1 }
+      }
+    ])
+  })
 })
 
 server.listen(port, () => {

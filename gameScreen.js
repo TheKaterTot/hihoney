@@ -6,6 +6,7 @@ import StatusBar from './statusBar'
 import Hive from './hive'
 import Flower from './flower'
 import ScreenText from './text'
+import socket from './socket'
 const { Tween } = TWEEN
 
 const textOneURL = require('./images/text-1.png')
@@ -74,6 +75,7 @@ export default class gameScreen extends Container {
 
   onClick (sprite) {
     return () => {
+      socket.emit('daisyClick')
       this.text.visible = false
       if (sprite === this.currentDaisy) {
         return
@@ -98,6 +100,7 @@ export default class gameScreen extends Container {
 
   onGather () {
     return () => {
+      socket.emit('gather')
       this.currentPercent += 0.25
       if (this.currentPercent >= 1) {
         if (!this.hasBeenToHive) {
@@ -111,6 +114,7 @@ export default class gameScreen extends Container {
 
   onHiveClick (sprite) {
     return () => {
+      socket.emit('hiveClick')
       const newBeePos = this.screenWidth - this.bee.width
       this.daisies.interactiveChildren = false
       this.textTwo.visible = false
@@ -159,6 +163,7 @@ export default class gameScreen extends Container {
     if (this.currentDaisy !== daisy) {
       return
     }
+    socket.emit('bumped')
     this.bee.stopGather()
     this.currentDaisy = null
     // player gets kicked off if on
