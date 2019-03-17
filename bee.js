@@ -1,12 +1,12 @@
-import { Container, Sprite } from "pixi.js"
-import StatusBar from "./statusBar"
+import { Container, Sprite } from 'pixi.js'
+import StatusBar from './statusBar'
 
 const beeURL = require('./images/bumblebee.png')
 
 export default class Bee extends Container {
-  constructor(x, y) {
+  constructor (x, y) {
     super()
-    this.initial = {x, y}
+    this.initial = { x, y }
     this.y = y
     this.interactive = true
     this.image = Sprite.fromImage(beeURL)
@@ -19,19 +19,19 @@ export default class Bee extends Container {
     this.percent = 0
   }
 
-  startGather() {
+  startGather () {
     this.gathering = true
     this.statusBar.visible = true
   }
 
-  stopGather() {
+  stopGather () {
     this.gathering = false
     this.statusBar.visible = false
     this.percent = 0
     this.statusBar.clear()
   }
 
-  gatherPollen() {
+  gatherPollen () {
     if (this.gathering && this.percent < 1) {
       this.statusBar.updateWidth(this.percent)
       this.percent += 0.005
@@ -41,12 +41,12 @@ export default class Bee extends Container {
     }
   }
 
-  reset() {
+  reset () {
     this.x = this.initial.x - this.width
     this.y = this.initial.y
   }
 
-  update() {
+  update () {
     this.gatherPollen()
   }
 }

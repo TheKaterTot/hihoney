@@ -1,13 +1,13 @@
-import { Container, Sprite } from "pixi.js"
-import TWEEN from "@tweenjs/tween.js"
-import {Tween} from "@tweenjs/tween.js"
-import Ladybug from "./ladybug"
+import { Container, Sprite } from 'pixi.js'
+import TWEEN from '@tweenjs/tween.js'
+import Ladybug from './ladybug'
+const { Tween } = TWEEN
 
 const daisyTopURL = require('./images/daisy-head.png')
 const daisyBottomURL = require('./images/daisy-bottom.png')
 
 export default class Flower extends Container {
-  constructor(x, y) {
+  constructor (x, y) {
     super()
     this.x = x
     this.interactive = true
@@ -24,40 +24,40 @@ export default class Flower extends Container {
     this.addChild(this.ladybug)
   }
 
-  animateLanding() {
+  animateLanding () {
     new Tween(this.topImage.position)
-    .to({y: 2}, 50)
-    .easing(TWEEN.Easing.Exponential.InOut)
-    .start()
+      .to({ y: 2 }, 50)
+      .easing(TWEEN.Easing.Exponential.InOut)
+      .start()
   }
 
-  animateLeaving() {
+  animateLeaving () {
     new Tween(this.topImage.position)
-    .to({y: 0}, 50)
-    .easing(TWEEN.Easing.Exponential.InOut)
-    .start()
+      .to({ y: 0 }, 50)
+      .easing(TWEEN.Easing.Exponential.InOut)
+      .start()
   }
 
-  infect() {
+  infect () {
     this.ladybug.y = this.bottomImage.height + this.topImage.height
     new Tween(this.ladybug.position)
-    .to({y: 0}, 5000)
-    .chain(new Tween(this.ladybug.position)
-      .to({y: this.bottomImage.height + this.topImage.height}, 5000)
-      .onStart( () => {
-        this.ladybug.scale.y = -1
-      })
-      .onComplete( () => {
-        this.ladybug.scale.y = 1
-        this.emit('infectionComplete')
-      })
-      .delay(2000)
-    )
-    .start()
+      .to({ y: 0 }, 5000)
+      .chain(new Tween(this.ladybug.position)
+        .to({ y: this.bottomImage.height + this.topImage.height }, 5000)
+        .onStart(() => {
+          this.ladybug.scale.y = -1
+        })
+        .onComplete(() => {
+          this.ladybug.scale.y = 1
+          this.emit('infectionComplete')
+        })
+        .delay(2000)
+      )
+      .start()
     this.ladybug.visible = true
   }
 
-  isInfected() {
+  isInfected () {
     let hit, combinedHalfWidths, combinedHalfHeights, vx, vy
     hit = false
     let daisy = this.topImage.getBounds()
@@ -82,24 +82,24 @@ export default class Flower extends Container {
     combinedHalfHeights = daisy.halfHeight + ladybug.halfHeight
 
     if (Math.abs(vx) < combinedHalfWidths) {
-      //A collision might be occuring. Check for a collision on the y axis
+      // A collision might be occuring. Check for a collision on the y axis
       if (Math.abs(vy) < combinedHalfHeights) {
-        //There's definitely a collision happening
+        // There's definitely a collision happening
         hit = true
         this.emit('infected')
       } else {
-        //There's no collision on the y axis
+        // There's no collision on the y axis
         hit = false
       }
     } else {
-      //There's no collision on the x axis
+      // There's no collision on the x axis
       hit = false
     }
-    //`hit` will be either `true` or `false`
+    // `hit` will be either `true` or `false`
     return hit
   }
 
-  update() {
+  update () {
     this.isInfected()
   }
 }
